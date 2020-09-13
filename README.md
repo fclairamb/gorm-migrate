@@ -1,3 +1,8 @@
+![Build](https://github.com/fclairamb/gorm-migrate/workflows/Build/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/fclairamb/gorm-migrate)](https://goreportcard.com/report/fclairamb/gorm-migrate)
+[![GoDoc](https://godoc.org/github.com/fclairamb/gorm-migrate?status.svg)](https://godoc.org/github.com/fclairamb/gorm-migrate)
+
+
 # Gorm database migration
 
 Simplistic library take advantage of the [gorm's migration API](https://gorm.io/docs/migration.html).
