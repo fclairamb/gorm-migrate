@@ -50,7 +50,7 @@ func performMigrations(db *gorm.DB) error {
         },
     }
     
-    if nb, err := migrate.Migrate(db, steps[0:1], migrate.UpFull); err != nil {
+    if nb, err := migrate.Migrate(db, steps, migrate.UpFull); err != nil {
         return err
     } else if nb > 0 {
         log.Printf("Performed %d migrations !\n", nb)
