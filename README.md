@@ -1,4 +1,5 @@
 ![Build](https://github.com/fclairamb/gorm-migrate/workflows/Build/badge.svg)
+[![codecov](https://codecov.io/gh/fclairamb/gorm-migrate/branch/main/graph/badge.svg)](https://codecov.io/gh/fclairamb/gorm-migrate)
 [![Go Report Card](https://goreportcard.com/badge/fclairamb/gorm-migrate)](https://goreportcard.com/report/fclairamb/gorm-migrate)
 [![GoDoc](https://godoc.org/github.com/fclairamb/gorm-migrate?status.svg)](https://godoc.org/github.com/fclairamb/gorm-migrate)
 
