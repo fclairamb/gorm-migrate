@@ -7,4 +7,4 @@ require (
 	gorm.io/gorm v1.20.1
 )
 
-replace gorm.io/driver/sqlite => /Users/florent/go/src/github.com/fclairamb/sqlite
+// replace gorm.io/driver/sqlite => /Users/florent/go/src/github.com/fclairamb/sqlite
