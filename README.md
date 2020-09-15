@@ -9,7 +9,7 @@
 
 # Gorm database migration
 
-Simplistic library take advantage of the [gorm's migration API](https://gorm.io/docs/migration.html).
+Simple library to take advantage of the [gorm's migration API](https://gorm.io/docs/migration.html).
 
 ## Choices
 
