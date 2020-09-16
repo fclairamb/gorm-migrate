@@ -2,7 +2,6 @@
 [![codecov](https://codecov.io/gh/fclairamb/gorm-migrate/branch/main/graph/badge.svg)](https://codecov.io/gh/fclairamb/gorm-migrate)
 [![Go Report Card](https://goreportcard.com/badge/fclairamb/gorm-migrate)](https://goreportcard.com/report/fclairamb/gorm-migrate)
 ![Go version](https://img.shields.io/github/go-mod/go-version/fclairamb/gorm-migrate.svg)
-[![GoDoc](https://godoc.org/github.com/fclairamb/gorm-migrate?status.svg)](https://godoc.org/github.com/fclairamb/gorm-migrate)
 [![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/github.com/fclairamb/gorm-migrate?tab=doc)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
