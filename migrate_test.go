@@ -272,10 +272,7 @@ func TestBadDirection(t *testing.T) {
 	}
 }
 
-func TestKnownSqliteIssueWithDropColumn(t *testing.T) {
-	// For now this won't work, but fix in on the way: https://github.com/go-gorm/sqlite/pull/9
-	t.SkipNow()
-
+func TestDropColumn(t *testing.T) {
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
@@ -314,10 +311,7 @@ func TestKnownSqliteIssueWithDropColumn(t *testing.T) {
 	}
 }
 
-func TestKnownSqliteIssueWithAlterColumn(t *testing.T) {
-	// For now this won't work, but fix in on the way: https://github.com/go-gorm/sqlite/pull/9
-	t.SkipNow()
-
+func TestAlterColumn(t *testing.T) {
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
