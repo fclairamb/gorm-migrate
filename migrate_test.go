@@ -273,8 +273,6 @@ func TestBadDirection(t *testing.T) {
 }
 
 func TestDropColumn(t *testing.T) {
-	// https://github.com/go-gorm/sqlite/pull/9
-
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
@@ -314,8 +312,6 @@ func TestDropColumn(t *testing.T) {
 }
 
 func TestAlterColumn(t *testing.T) {
-	// https://github.com/go-gorm/sqlite/pull/9
-
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
