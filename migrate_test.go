@@ -405,10 +405,12 @@ func TestStepByStep(t *testing.T) {
 }
 
 func TestStepsValidationOk(t *testing.T) {
+	nbExecutions := 0
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
 			Up: func(db *gorm.DB) error {
+				nbExecutions++
 				return db.AutoMigrate(&User{})
 			},
 			Down: func(db *gorm.DB) error {
@@ -425,8 +427,21 @@ func TestStepsValidationOk(t *testing.T) {
 			},
 		},
 	}
-	if err := migrate.ValidateSteps(getDB(t), steps); err != nil {
+
+	if err := migrate.ValidateSteps(getDB(t), steps, false); err != nil {
 		t.Fatal("Failed validation:", err)
+	}
+
+	if nbExecutions != 1 {
+		t.Fatal("Should have been executed once:", nbExecutions)
+	}
+
+	if err := migrate.ValidateSteps(getDB(t), steps, true); err != nil {
+		t.Fatal("Failed validation:", err)
+	}
+
+	if nbExecutions != 3 {
+		t.Fatal("Should have been executed once:", nbExecutions)
 	}
 }
 
@@ -456,7 +471,7 @@ func TestStepsValidationNotOk(t *testing.T) {
 		},
 	}
 
-	if err := migrate.ValidateSteps(getDB(t), steps); err == nil {
+	if err := migrate.ValidateSteps(getDB(t), steps, false); err == nil {
 		t.Fatal("We should have failed !")
 	}
 }
