@@ -427,6 +427,7 @@ func TestStepsValidationOk(t *testing.T) {
 			},
 		},
 	}
+
 	if err := migrate.ValidateSteps(getDB(t), steps, false); err != nil {
 		t.Fatal("Failed validation:", err)
 	}
