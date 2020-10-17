@@ -27,7 +27,7 @@ func getDB(t *testing.T) *gorm.DB {
 	return db
 }
 
-var ErrBadMigration = errors.New("this is bad migration")
+var ErrBadMigration = errors.New("this is a bad migration")
 
 type User struct {
 	gorm.Model
@@ -385,7 +385,7 @@ func TestStepByStep(t *testing.T) {
 	}
 
 	if nbUps != 3 {
-		t.Fatalf("Wrong nuimber of ups: %d", nbUps)
+		t.Fatalf("Wrong number of ups: %d", nbUps)
 	}
 
 	for {
@@ -401,5 +401,62 @@ func TestStepByStep(t *testing.T) {
 
 	if nbUps != 0 {
 		t.Fatalf("Wrong number of downs: %d", nbUps)
+	}
+}
+
+func TestStepsValidationOk(t *testing.T) {
+	steps := []*migrate.MigrationStep{
+		{
+			Name: "000",
+			Up: func(db *gorm.DB) error {
+				return db.AutoMigrate(&User{})
+			},
+			Down: func(db *gorm.DB) error {
+				return db.Migrator().DropColumn(&User{}, "first_name")
+			},
+		},
+		{
+			Name: "001",
+			Up: func(db *gorm.DB) error {
+				return db.AutoMigrate(&User{})
+			},
+			Down: func(db *gorm.DB) error {
+				return db.Migrator().DropColumn(&User{}, "last_name")
+			},
+		},
+	}
+	if err := migrate.ValidateSteps(getDB(t), steps); err != nil {
+		t.Fatal("Failed validation:", err)
+	}
+}
+
+func TestStepsValidationNotOk(t *testing.T) {
+	step := &migrate.MigrationStep{
+		Up: func(db *gorm.DB) error {
+			return db.AutoMigrate(&User{})
+		},
+		Down: func(db *gorm.DB) error {
+			mig := db.Migrator()
+			if !mig.HasColumn(&User{}, "first_name") {
+				return ErrBadMigration
+			}
+			return mig.DropColumn(&User{}, "first_name")
+		},
+	}
+	steps := []*migrate.MigrationStep{
+		{
+			Name: "000",
+			Up:   step.Up,
+			Down: step.Down,
+		},
+		{
+			Name: "001",
+			Up:   step.Up,
+			Down: step.Down,
+		},
+	}
+
+	if err := migrate.ValidateSteps(getDB(t), steps); err == nil {
+		t.Fatal("We should have failed !")
 	}
 }
