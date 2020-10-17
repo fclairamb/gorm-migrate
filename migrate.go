@@ -59,7 +59,7 @@ var (
 	// ErrBadDirection is returned when the direction is equal to 0.
 	ErrBadDirection = fmt.Errorf("bad direction")
 
-	// ErrInconsistentSteps is returned when we couldn't apply all the migration steps ups & downs
+	// ErrInconsistentSteps is returned when we couldn't apply all the migration steps ups & downs.
 	ErrInconsistentSteps = fmt.Errorf("inconsistent steps")
 )
 
@@ -211,16 +211,18 @@ func Migrate(db *gorm.DB, steps Migrations, direction int) (int, error) {
 	})
 }
 
-// ValidateSteps validates that all the steps can be applied up & down
+// ValidateSteps validates that all the steps can be applied up & down.
 func ValidateSteps(db *gorm.DB, steps Migrations) error {
 	db = db.Begin()
 	defer db.Rollback()
+
 	for pass := 1; pass <= 2; pass++ {
 		db.Logger.Info(
 			context.Background(),
 			"Validation: Pass %d",
 			pass,
 		)
+
 		nbUps := 0
 		nbDowns := 0
 
@@ -231,15 +233,17 @@ func ValidateSteps(db *gorm.DB, steps Migrations) error {
 					"Validation: Migrate direction=%d",
 					direction,
 				)
+
 				if nb, err := Migrate(db, steps, direction); err != nil {
 					return err
 				} else if nb == 0 {
 					break
 				}
+
 				if direction == UpOne {
-					nbUps += 1
+					nbUps++
 				} else if direction == DownOne {
-					nbDowns += 1
+					nbDowns++
 				}
 			}
 		}
@@ -248,6 +252,7 @@ func ValidateSteps(db *gorm.DB, steps Migrations) error {
 			return ErrInconsistentSteps
 		}
 	}
+
 	return nil
 }
 
