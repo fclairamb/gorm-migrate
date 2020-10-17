@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"time"
 
 	"gorm.io/gorm"
@@ -213,40 +214,46 @@ func Migrate(db *gorm.DB, steps Migrations, direction int) (int, error) {
 
 // ValidateSteps validates that all the steps can be applied up & down.
 func ValidateSteps(db *gorm.DB, steps Migrations, dual bool) error {
-	db = db.Begin()
-	defer db.Rollback()
+	// We're using this only to benefit from the automatic sub-transaction logic
+	err := db.Transaction(func(db *gorm.DB) error {
+		nbPasses := 1
 
-	nbPasses := 1
+		if dual {
+			nbPasses = 2
+		}
+		for pass := 1; pass <= nbPasses; pass++ {
+			db.Logger.Info(
+				context.Background(),
+				"Validation: Pass %d",
+				pass,
+			)
 
-	if dual {
-		nbPasses = 2
-	}
+			for _, direction := range []int{UpOne, DownOne} {
+				for {
+					db.Logger.Info(
+						context.Background(),
+						"Validation: Migrate direction=%d",
+						direction,
+					)
 
-	for pass := 1; pass <= nbPasses; pass++ {
-		db.Logger.Info(
-			context.Background(),
-			"Validation: Pass %d",
-			pass,
-		)
-
-		for _, direction := range []int{UpOne, DownOne} {
-			for {
-				db.Logger.Info(
-					context.Background(),
-					"Validation: Migrate direction=%d",
-					direction,
-				)
-
-				if nb, err := Migrate(db, steps, direction); err != nil {
-					return err
-				} else if nb == 0 {
-					break
+					if nb, err := Migrate(db, steps, direction); err != nil {
+						return err
+					} else if nb == 0 {
+						break
+					}
 				}
 			}
 		}
+
+		return io.EOF // We're returning an error to cancel the transaction
+	})
+
+	// But it's still not an error
+	if err == io.EOF {
+		err = nil
 	}
 
-	return nil
+	return err
 }
 
 func applyMigration(db *gorm.DB, steps Migrations, up bool) (int, error) {
