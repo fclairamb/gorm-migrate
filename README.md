@@ -13,7 +13,7 @@ Simple library to take advantage of the [gorm's migration API](https://gorm.io/d
 ## Choices
 
 * It only applies migrations. It's up to you to chose when to apply each operation.
-* Any failure cancels every single change (including the one to migrations listing table)
+* Any failure cancels every single change (including the one to the migrations listing table)
 * There are no consistency checks between migrations. ALl migrations will be applied as long as they are after
   the current migration.
   
