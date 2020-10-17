@@ -272,10 +272,7 @@ func TestBadDirection(t *testing.T) {
 	}
 }
 
-func TestKnownIssueWithDropColumn(t *testing.T) {
-	// For now this won't work
-	t.SkipNow()
-
+func TestDropColumn(t *testing.T) {
 	steps := []*migrate.MigrationStep{
 		{
 			Name: "000",
@@ -302,6 +299,45 @@ func TestKnownIssueWithDropColumn(t *testing.T) {
 				// The DropColumn directive doesn't work because the reconstruction doesn't make use
 				// of the gorm transactions properly.
 				return mig.DropColumn(&User{}, "last_name")
+			},
+			Down: func(db *gorm.DB) error { return nil },
+		},
+	}
+
+	db := getDB(t)
+
+	if _, err := migrate.Migrate(db, steps, migrate.UpFull); err != nil {
+		t.Fatalf("Problem: %v", err)
+	}
+}
+
+func TestAlterColumn(t *testing.T) {
+	steps := []*migrate.MigrationStep{
+		{
+			Name: "000",
+			Up: func(db *gorm.DB) error {
+				mig := db.Migrator()
+				if err := db.AutoMigrate(&User{}); err != nil {
+					return err
+				}
+				if err := mig.DropColumn(&User{}, "Age"); err != nil {
+					return err
+				}
+				if err := mig.RenameColumn(&User{}, "FirstName", "Age"); err != nil {
+					return err
+				}
+				return nil
+			},
+			Down: func(db *gorm.DB) error { return nil },
+		},
+		{
+			Name: "001",
+			Up: func(db *gorm.DB) error {
+				mig := db.Migrator()
+				if err := mig.AlterColumn(&User{}, "age"); err != nil {
+					return err
+				}
+				return nil
 			},
 			Down: func(db *gorm.DB) error { return nil },
 		},

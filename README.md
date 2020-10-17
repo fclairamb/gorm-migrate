@@ -1,11 +1,19 @@
+![Build](https://github.com/fclairamb/gorm-migrate/workflows/Build/badge.svg)
+[![codecov](https://codecov.io/gh/fclairamb/gorm-migrate/branch/main/graph/badge.svg)](https://codecov.io/gh/fclairamb/gorm-migrate)
+[![Go Report Card](https://goreportcard.com/badge/fclairamb/gorm-migrate)](https://goreportcard.com/report/fclairamb/gorm-migrate)
+![Go version](https://img.shields.io/github/go-mod/go-version/fclairamb/gorm-migrate.svg)
+[![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/github.com/fclairamb/gorm-migrate?tab=doc)
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+
+
 # Gorm database migration
 
-Simplistic library take advantage of the [gorm's migration API](https://gorm.io/docs/migration.html).
+Simple library to take advantage of the [gorm's migration API](https://gorm.io/docs/migration.html).
 
 ## Choices
 
 * It only applies migrations. It's up to you to chose when to apply each operation.
-* Any failure cancels every single change (including the one to migrations listing table)
+* Any failure cancels every single change (including the one to the migrations listing table)
 * There are no consistency checks between migrations. ALl migrations will be applied as long as they are after
   the current migration.
   
@@ -50,7 +58,7 @@ func performMigrations(db *gorm.DB) error {
         },
     }
     
-    if nb, err := migrate.Migrate(db, steps[0:1], migrate.UpFull); err != nil {
+    if nb, err := migrate.Migrate(db, steps, migrate.UpFull); err != nil {
         return err
     } else if nb > 0 {
         log.Printf("Performed %d migrations !\n", nb)

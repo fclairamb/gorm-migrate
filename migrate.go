@@ -120,13 +120,16 @@ func checkMigrations(steps Migrations) error {
 }
 
 func getIndexForName(steps Migrations, name string) int {
+	index := -1
+
 	for k, v := range steps {
 		if v.Name == name {
-			return k
+			index = k
+			break
 		}
 	}
 
-	return -1
+	return index
 }
 
 func getSteps(steps Migrations, currentMigrationName string, direction int) Migrations {
