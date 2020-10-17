@@ -455,6 +455,7 @@ func TestStepsValidationNotOk(t *testing.T) {
 			Down: step.Down,
 		},
 	}
+
 	if err := migrate.ValidateSteps(getDB(t), steps); err == nil {
 		t.Fatal("We should have failed !")
 	}
