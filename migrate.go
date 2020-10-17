@@ -212,11 +212,17 @@ func Migrate(db *gorm.DB, steps Migrations, direction int) (int, error) {
 }
 
 // ValidateSteps validates that all the steps can be applied up & down.
-func ValidateSteps(db *gorm.DB, steps Migrations) error {
+func ValidateSteps(db *gorm.DB, steps Migrations, dual bool) error {
 	db = db.Begin()
 	defer db.Rollback()
 
-	for pass := 1; pass <= 2; pass++ {
+	nbPasses := 1
+
+	if dual {
+		nbPasses = 2
+	}
+
+	for pass := 1; pass <= nbPasses; pass++ {
 		db.Logger.Info(
 			context.Background(),
 			"Validation: Pass %d",
