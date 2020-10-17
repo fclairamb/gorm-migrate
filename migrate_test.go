@@ -349,7 +349,7 @@ func TestStepByStep(t *testing.T) {
 	}
 
 	if nbUps != 3 {
-		t.Fatalf("Wrong nuimber of ups: %d", nbUps)
+		t.Fatalf("Wrong number of ups: %d", nbUps)
 	}
 
 	for {
@@ -365,5 +365,31 @@ func TestStepByStep(t *testing.T) {
 
 	if nbUps != 0 {
 		t.Fatalf("Wrong number of downs: %d", nbUps)
+	}
+}
+
+func TestStepsValidation(t *testing.T) {
+	steps := []*migrate.MigrationStep{
+		{
+			Name: "000",
+			Up: func(db *gorm.DB) error {
+				return db.AutoMigrate(&User{})
+			},
+			Down: func(db *gorm.DB) error {
+				return db.Migrator().DropColumn(&User{}, "first_name")
+			},
+		},
+		{
+			Name: "001",
+			Up: func(db *gorm.DB) error {
+				return db.AutoMigrate(&User{})
+			},
+			Down: func(db *gorm.DB) error {
+				return db.Migrator().DropColumn(&User{}, "last_name")
+			},
+		},
+	}
+	if err := migrate.ValidateSteps(getDB(t), steps); err != nil {
+		t.Fatal("Failed validation:", err)
 	}
 }
