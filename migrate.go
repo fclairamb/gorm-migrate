@@ -214,10 +214,8 @@ func Migrate(db *gorm.DB, steps Migrations, direction int) (int, error) {
 
 // ValidateSteps validates that all the steps can be applied up & down.
 func ValidateSteps(db *gorm.DB, steps Migrations, dual bool) error {
-	var err error
-
 	// We're using this only to benefit from the automatic sub-transaction logic
-	uselessErr := db.Transaction(func(db *gorm.DB) error {
+	err := db.Transaction(func(db *gorm.DB) error {
 		nbPasses := 1
 
 		if dual {
@@ -238,9 +236,7 @@ func ValidateSteps(db *gorm.DB, steps Migrations, dual bool) error {
 						direction,
 					)
 
-					var nb int
-
-					if nb, err = Migrate(db, steps, direction); err != nil {
+					if nb, err := Migrate(db, steps, direction); err != nil {
 						return err
 					} else if nb == 0 {
 						break
@@ -248,11 +244,13 @@ func ValidateSteps(db *gorm.DB, steps Migrations, dual bool) error {
 				}
 			}
 		}
-		return io.EOF
+
+		return io.EOF // We're returning an error to cancel the transaction
 	})
 
-	if uselessErr != io.EOF {
-		panic(uselessErr)
+	// But it's still not an error
+	if err == io.EOF {
+		err = nil
 	}
 
 	return err
