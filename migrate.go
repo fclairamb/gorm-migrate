@@ -223,9 +223,6 @@ func ValidateSteps(db *gorm.DB, steps Migrations) error {
 			pass,
 		)
 
-		nbUps := 0
-		nbDowns := 0
-
 		for _, direction := range []int{UpOne, DownOne} {
 			for {
 				db.Logger.Info(
@@ -239,17 +236,7 @@ func ValidateSteps(db *gorm.DB, steps Migrations) error {
 				} else if nb == 0 {
 					break
 				}
-
-				if direction == UpOne {
-					nbUps++
-				} else if direction == DownOne {
-					nbDowns++
-				}
 			}
-		}
-
-		if nbUps != nbDowns {
-			return ErrInconsistentSteps
 		}
 	}
 
