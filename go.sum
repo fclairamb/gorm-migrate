@@ -57,5 +57,7 @@ gorm.io/gorm v1.20.1/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
 gorm.io/gorm v1.20.2 h1:bZzSEnq7NDGsrd+n3evOOedDrY5oLM5QPlCjZJUK2ro=
 gorm.io/gorm v1.20.2/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
 gorm.io/gorm v1.20.3/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
+gorm.io/gorm v1.20.4 h1:fMFR+3bdgx2/vf6VXFgNcsjUL3kSD7ioOFvby3PYTgE=
+gorm.io/gorm v1.20.4/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=
 mvdan.cc/gofumpt v0.0.0-20200802201014-ab5a8192947d h1:t8TAw9WgTLghti7RYkpPmqk4JtQ3+wcP5GgZqgWeWLQ=
 mvdan.cc/gofumpt v0.0.0-20200802201014-ab5a8192947d/go.mod h1:bzrjFmaD6+xqohD3KYP0H2FEuxknnBmyyOxdhLdaIws=
